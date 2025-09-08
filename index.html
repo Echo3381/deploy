@@ -9,20 +9,25 @@
 
   <script>
     async function upload() {
-      const input = document.getElementById("img");
-      const file = input.files[0];
-      const formData = new FormData();
-      formData.append("image", file);
+  const input = document.getElementById("img");
+  const file = input.files[0];
+  const formData = new FormData();
+  formData.append("image", file);
 
-      // 请求后端接口并传递图片数据
-      const res = await fetch("http://127.0.0.1:10000/predict", {  // 确保是后端运行的地址
-          method: "POST",
-          body: formData
-      });
+  const res = await fetch("https://deploy-wq6t.onrender.com/predict", {  // 确保使用正确的后端 URL
+    method: "POST",
+    body: formData
+  });
 
-      const data = await res.json();
-      document.getElementById("result").innerText = "预测结果是：" + data.prediction;
-    }
+  const data = await res.json();
+  if (data.error) {
+    document.getElementById("result").innerText = "错误: " + data.error;
+  } else {
+    document.getElementById("result").innerText = "预测结果是：" + data.prediction;
+  }
+}
+
   </script>
 </body>
 </html>
+
